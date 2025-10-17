@@ -13,6 +13,7 @@ namespace AsistenciasyAlumnos.Servicios
         bool Eliminar(int id);      
         bool ActualizarTarea(Tarea tarea);
         bool ActualizarTareaAlumno(CalificarTarea tareacalificar);
+        bool CrearActualizarTareaAlumno(SubirTareaAlumno subirTareaAlumno);
     }
 
     public class TareaServicio : ITareaServicio
@@ -66,6 +67,30 @@ namespace AsistenciasyAlumnos.Servicios
         {
             var estatus = _repositorio.ActualizarTareaAlumno(tareacalificar);
             if (!estatus) throw new NoDataExcepcion($"No se pudo calificar la tarea");
+            return estatus;
+        }
+        public bool CrearActualizarTareaAlumno(SubirTareaAlumno subirTareaAlumno)
+        {
+            var fechaDeTarea = _repositorio.ObtenerTareaParaEstatus(subirTareaAlumno.Id);
+            if (fechaDeTarea == null) throw new NoDataExcepcion($"Error al obtener la fecha de la tarea");
+            DateTime fechaActual = DateTime.Now;
+            DateTime fechaEntrega;
+            try
+            {
+                fechaEntrega = DateTime.Parse(fechaDeTarea);
+            }
+            catch (Exception ex) {
+                throw new ValidacionExcepcion($"No se pudo convertir la fecha");
+            }
+            if (fechaActual > fechaEntrega)
+            {
+                subirTareaAlumno.Estatus = "ENTREGADO";
+            } else
+            {
+                subirTareaAlumno.Estatus = "RETARDADO";
+            }
+            var estatus = _repositorio.CrearActualizarTareaAlumno(subirTareaAlumno);
+            if (!estatus) throw new NoDataExcepcion($"No se pudo subir la tarea");
             return estatus;
         }
     }

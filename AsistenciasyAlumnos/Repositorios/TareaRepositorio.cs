@@ -14,6 +14,8 @@ namespace AsistenciasyAlumnos.Repositorios
         bool ActualizarTarea(Tarea tarea);
         bool ActualizarTareaAlumno(CalificarTarea tareacalificar);
         bool Eliminar(int id);
+        bool CrearActualizarTareaAlumno(SubirTareaAlumno subirTareaAlumno);
+        public string ObtenerTareaParaEstatus(int id);
     }
     public class TareaRepositorio : ITareaRepositorio
     {
@@ -97,6 +99,23 @@ namespace AsistenciasyAlumnos.Repositorios
                  "WHERE Id = @Id;";
             int filasAfectadas = conexion.Execute(query, tareacalificar);
             return filasAfectadas > 0;
+        }
+
+        //PARA QUE LOS ALUMNOS SUBAN LAS TAREAS
+        public bool CrearActualizarTareaAlumno(SubirTareaAlumno subirTareaAlumno)
+        {
+            using var conexion = new MySqlConnection(_connectionString);
+            string querysubirtarea = "UPDATE tareas_Entregar SET Material_Adjunto = @MaterialAdjunto, Estatus = @Estatus WHERE Id = @Id;";
+            int filasAfectadas = conexion.Execute(querysubirtarea, subirTareaAlumno);
+            return filasAfectadas > 0;
+        }
+        public string ObtenerTareaParaEstatus(int id)
+        {
+            using var conexion = new MySqlConnection(_connectionString);
+            string querytarea = "SELECT tareas.FechaEntrega FROM tareas INNER JOIN tareas_Entregar ON tareas.Id = tareas_Entregar.Id_Tarea " +
+                "WHERE tareas_Entregar.Id = @Id;";
+            var tarea = conexion.QueryFirstOrDefault<string>(querytarea, new { Id = id });
+            return tarea;
         }
     }
 }

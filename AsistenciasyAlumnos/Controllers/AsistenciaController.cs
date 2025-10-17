@@ -17,7 +17,7 @@ namespace TextAPI_D311.Controllers
             _asistenciaServicio = asistenciaServicio;
         }
 
-        [HttpPost("crearasistencia")]
+        [HttpPost("crear")]
         [Authorize(Roles = "DOCENTE,ADMIN")]
         public IActionResult RegistrarNuevaAsistencia(AsistenciaDiaria asistenciaDiaria)
         {
@@ -45,7 +45,7 @@ namespace TextAPI_D311.Controllers
             return Ok(respuesta);
 
         }
-        [HttpPost("guardarasistencia")]
+        [HttpPost("guardar")]
         [Authorize(Roles = "DOCENTE,ADMIN")]
         public IActionResult RegistrarAsistenciaPorAlumno(AsistenciaAlumnos asistenciaAlumnos)
         {
@@ -71,7 +71,7 @@ namespace TextAPI_D311.Controllers
                 );
             return Ok(respuesta);
         }
-        [HttpGet("obtnertodas")]
+        [HttpGet("todas")]
         [Authorize(Roles = "DOCENTE,ADMIN")]
         public IActionResult ObtnerTodasLasAsistencias()
         {
@@ -84,7 +84,7 @@ namespace TextAPI_D311.Controllers
                 );
             return Ok(respuesta);
         }
-        [HttpGet("obtenertodasprupo")]
+        [HttpGet("todasporgrupo")]
         [Authorize(Roles = "DOCENTE,ADMIN")]
         public IActionResult ObtenerTodasAsistenciasPorGrupo(int id)
         {

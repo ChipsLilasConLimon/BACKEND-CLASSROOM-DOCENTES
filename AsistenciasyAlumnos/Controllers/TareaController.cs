@@ -110,5 +110,16 @@ namespace AsistenciasyAlumnos.Controllers
             else
                 return NotFound();
         }
+
+        //ENDPOINTS PARA QUE USEN LOS ALUMNOS
+        [HttpPost("subirtarea")]
+        [Authorize(Roles = "USUARIO,ADMIN")] // ENTREGAR TAREA 
+        public IActionResult CrearEntregarTareaAlumno([FromBody]SubirTareaAlumno tareasubir) //TAREA QUE EL ALUMNO VA A SUBIR
+        {
+            if (string.IsNullOrEmpty(tareasubir.MaterialAdjunto))
+                return BadRequest();
+            _tareaServicio.CrearActualizarTareaAlumno(tareasubir);
+            return Ok("Tarea agregada correctamente.");
+        }
     }
 }

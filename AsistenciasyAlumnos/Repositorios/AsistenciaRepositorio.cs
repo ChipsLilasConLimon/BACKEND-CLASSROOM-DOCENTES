@@ -24,8 +24,6 @@ namespace TextAPI_D311.Repositorios
             _connectionString = configuration.GetConnectionString("MySQL");
         }
 
-
-
         public AsistenciaDiaria CrearAsistenciaDiaria(AsistenciaDiaria asistenciaDiaria)
         {
             using var conexion = new MySqlConnection(_connectionString);
